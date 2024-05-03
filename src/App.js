@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React,{ useState, useEffect} from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+  const [todos, setTodos] = useState([]);
+  const [newTodo, setNewTodo] = useState('');
 
-export default App;
+  //Fetch tasks from local storage on initial render
+  useEffect(() =>{
+    const storedTodos = localStorage.getltem('todos'); 
+    if (storedTodos){
+
+  setTodos(JSON.parse(storedTodos));
+  }
+},[]);
+
+//Save tasks to local storage on change
+  useEffect(() =>{
+    localStorage.setItem('todos',JSON.stringify(todos));
+  },[todos]);
+
+  const handleInputChange = (Event)=>{
+  setNewTodo(Event.target.value);
+ };
+
+  const handleAddTodo = () =>{
+    if(newTodo.trim()){//Ensure newTodo is not empty
+    setTodos([...todos,{id:Date.now(),text:newTodo,completed:false}]);
+    setNewTodo('');//clear input field after adding
+    }
+  };
+  return <h1>testing</h1>
+}
